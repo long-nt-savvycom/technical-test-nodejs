@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { authService } from './auth.service';
-import { SignUpBody } from './dto/sign-up.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 export class AuthController {
   private static _instance: AuthController;
@@ -14,7 +14,7 @@ export class AuthController {
 
   public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const resData = await authService.login(req.body as SignUpBody);
+      const resData = await authService.login(req.body as SignUpDto);
       res.json({
         success: true,
         data: resData,
@@ -24,14 +24,16 @@ export class AuthController {
     }
   }
 
-  public async signup(req: Request, res: Response): Promise<void> {
-    // const authService = AuthService.getInstance();
-    console.log({ body: req.body });
-    await authService.signUp(req.body as SignUpBody);
-    res.json({
-      success: true,
-      message: 'Create User',
-    });
+  public async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const resData = await authService.signUp(req.body as SignUpDto);
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
   }
 
   // authRoute.get('/refresh-token', (req: Request, res: Response): void => {

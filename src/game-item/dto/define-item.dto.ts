@@ -1,11 +1,12 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class SignUpDto {
+export class DefineItemDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  description: string;
 }
+

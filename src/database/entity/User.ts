@@ -1,7 +1,13 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './Base';
+import { UserItem } from './UserItem';
 
-@Entity()
+export enum Roles {
+  Admin = 'admin',
+  User = 'user',
+}
+
+@Entity({ name: 'user' })
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,4 +18,10 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Column({ enum: Roles, type: 'enum', default: Roles.User })
+  role: Roles;
+
+  @OneToMany(() => UserItem, (userItem) => userItem.user)
+  items: UserItem[];
 }

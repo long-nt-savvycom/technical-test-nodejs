@@ -12,12 +12,10 @@ export class UserService {
   }
 
   async getProfile(userBody: Partial<User>) {
-    return userRepository.findOne(userBody);
+    const user = await userRepository.findOne(userBody);
+    delete user.password;
+    return user;
   }
-
-  // async updateProfile(userBody: Partial<User>) {
-  //   return userRepository.update(userBody);
-  // }
 }
 
 export const userService = UserService.getInstance();

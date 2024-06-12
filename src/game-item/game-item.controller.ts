@@ -1,26 +1,28 @@
 import { NextFunction, Response } from 'express';
 import { AuthUserRequest } from '../auth/auth.interface';
-import { userService } from './game-item.service';
+import { BuyItemDto } from './dto/buy-item.dto';
+import { DefineItemDto } from './dto/define-item.dto';
+import { RemoveUserItem } from './dto/remove-user-item.dto';
+import { UpdateItemLevelDto } from './dto/update-item-level.dto';
+import { gameItemService } from './game-item.service';
 
-export class UserController {
-  private static _instance: UserController;
+export class GameItemController {
+  private static _instance: GameItemController;
   static getInstance() {
     if (this._instance) {
       return this._instance;
     }
-    this._instance = new UserController();
+    this._instance = new GameItemController();
     return this._instance;
   }
 
-  public async getProfile(
+  public async createItem(
     req: AuthUserRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const userId = req.user.userId;
-      console.log({ userId });
-      const resData = await userService.getProfile({ id: userId });
+      const resData = await gameItemService.defineItem(req.body as DefineItemDto);
       res.json({
         success: true,
         data: resData,
@@ -30,27 +32,90 @@ export class UserController {
     }
   }
 
-  // public async signup(req: Request, res: Response): Promise<void> {
-  //   // const authService = AuthService.getInstance();
-  //   console.log({ body: req.body });
-  //   await authService.signUp(req.body as SignUpBody);
-  //   res.json({
-  //     success: true,
-  //     message: 'Create User',
-  //   });
-  // }
+  public async getItemStore(
+    req: AuthUserRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const resData = await gameItemService.listItem(req.body);
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  // authRoute.get('/refresh-token', (req: Request, res: Response): void => {
-  //   res.json({
-  //     success: true,
-  //     message: 'Get One User',
-  //   });
-  // });
+  public async buyItem(
+    req: AuthUserRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const userId = req.user.userId;
+      const resData = await gameItemService.buyItem(
+        userId,
+        (req.body as BuyItemDto).itemId,
+      );
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  // authRoute.get('/logout', (req: Request, res: Response): void => {
-  //   res.json({
-  //     success: true,
-  //     message: 'Update One User',
-  //   });
-  // });
+  public async getMyItems(
+    req: AuthUserRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const userId = req.user.userId;
+      const resData = await gameItemService.getUserItems(userId, req.body);
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async updateUserItemLevel(
+    req: AuthUserRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const resData = await gameItemService.updateLevelItem(<UpdateItemLevelDto>req.body);
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async removeUserItem(
+    req: AuthUserRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const resData = await gameItemService.removeItem(
+        (<RemoveUserItem>req.body).userItemId,
+      );
+      res.json({
+        success: true,
+        data: resData,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }

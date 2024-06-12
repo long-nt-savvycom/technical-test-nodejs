@@ -1,28 +1,12 @@
 import * as express from 'express';
 import { AuthController } from '../auth/auth.controller';
+import { SignUpDto } from '../auth/dto/sign-up.dto';
+import { dtoValidationMiddleware } from '../middlewares/dto-validator.middleware';
 const Router = express.Router();
 const authController = AuthController.getInstance();
 
-// Router.get('/users', authentification, authorization(['admin']), UserController.getUsers);
-// Router.get(
-//   '/profile',
-//   authentification,
-//   authorization(['user', 'admin']),
-//   AuthController.getProfile,
-// );
-Router.post('/signup', authController.signup);
-Router.post('/login', authController.login);
-// Router.put(
-//   '/update/:id',
-//   authentification,
-//   authorization(['user', 'admin']),
-//   UserController.updateUser,
-// );
-// Router.delete(
-//   '/delete/:id',
-//   authentification,
-//   authorization(['admin']),
-//   UserController.deleteUser,
-// );
-export { Router as authRouter };
+Router.post('/signup', dtoValidationMiddleware(SignUpDto), authController.signup);
 
+Router.post('/login', dtoValidationMiddleware(SignUpDto), authController.login);
+
+export { Router as authRouter };
