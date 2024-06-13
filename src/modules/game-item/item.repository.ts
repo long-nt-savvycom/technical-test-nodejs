@@ -1,6 +1,6 @@
-import { PagingDto } from '../common/dto/paging.dto';
-import { AppDataSource } from '../database/data-source';
-import { Item } from '../database/entity/Item';
+import { AppDataSource } from '../../database/data-source';
+import { PagingDto } from '../../utils/dto/paging.dto';
+import { Item } from './entities/item.model';
 
 export class ItemRepository {
   private ItemRepository = AppDataSource.getRepository(Item);

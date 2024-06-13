@@ -1,6 +1,6 @@
+import { AuthUserRequest } from '@auth/auth.interface';
+import { userRepository } from '@user/user.repository';
 import { NextFunction, Response } from 'express';
-import { AuthUserRequest } from '../auth/auth.interface';
-import { userRepository } from '../user/user.repository';
 
 export const authorization = (roles: string[]) => {
   return async (req: AuthUserRequest, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
+import { AuthUserRequest } from '@auth/auth.interface';
 import { NextFunction, Response } from 'express';
-import { AuthUserRequest } from '../auth/auth.interface';
 import { BuyItemDto } from './dto/buy-item.dto';
 import { DefineItemDto } from './dto/define-item.dto';
 import { RemoveUserItem } from './dto/remove-user-item.dto';
@@ -22,11 +22,9 @@ export class GameItemController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const resData = await gameItemService.defineItem(req.body as DefineItemDto);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.status = 201;
+      res.locals.data = await gameItemService.defineItem(req.body as DefineItemDto);
+      next();
     } catch (err) {
       next(err);
     }
@@ -38,11 +36,8 @@ export class GameItemController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const resData = await gameItemService.listItem(req.body);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.data = await gameItemService.listItem(req.body);
+      next();
     } catch (err) {
       next(err);
     }
@@ -55,14 +50,12 @@ export class GameItemController {
   ): Promise<void> {
     try {
       const userId = req.user.userId;
-      const resData = await gameItemService.buyItem(
+      res.locals.status = 201;
+      res.locals.data = await gameItemService.buyItem(
         userId,
         (req.body as BuyItemDto).itemId,
       );
-      res.json({
-        success: true,
-        data: resData,
-      });
+      next();
     } catch (err) {
       next(err);
     }
@@ -75,11 +68,8 @@ export class GameItemController {
   ): Promise<void> {
     try {
       const userId = req.user.userId;
-      const resData = await gameItemService.getUserItems(userId, req.body);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.data = await gameItemService.getUserItems(userId, req.body);
+      next();
     } catch (err) {
       next(err);
     }
@@ -91,11 +81,11 @@ export class GameItemController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const resData = await gameItemService.updateLevelItem(<UpdateItemLevelDto>req.body);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.status = 204;
+      res.locals.data = await gameItemService.updateLevelItem(
+        <UpdateItemLevelDto>req.body,
+      );
+      next();
     } catch (err) {
       next(err);
     }
@@ -107,13 +97,10 @@ export class GameItemController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const resData = await gameItemService.removeItem(
+      res.locals.data = await gameItemService.removeItem(
         (<RemoveUserItem>req.body).userItemId,
       );
-      res.json({
-        success: true,
-        data: resData,
-      });
+      next();
     } catch (err) {
       next(err);
     }

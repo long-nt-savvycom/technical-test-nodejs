@@ -4,6 +4,7 @@ import { AppDataSource } from './database/data-source';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routers';
 import bodyParser = require('body-parser');
+import { FormatResponse } from '@middleware/format-response.middleware';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/health', (req: express.Request, res: express.Response) => {
 });
 
 app.use('/v1/', routes);
+app.use(FormatResponse)
 app.use(errorHandler);
 
 AppDataSource.initialize()

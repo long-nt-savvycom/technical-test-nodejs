@@ -1,6 +1,6 @@
-import { PagingDto } from '../common/dto/paging.dto';
-import { AppDataSource } from '../database/data-source';
-import { UserItem } from '../database/entity/UserItem';
+import { AppDataSource } from '../../database/data-source';
+import { PagingDto } from '../../utils/dto/paging.dto';
+import { UserItem } from './entities/user-item.model';
 
 export class UserItemRepository {
   private userItemRepository = AppDataSource.getRepository(UserItem);
@@ -30,7 +30,7 @@ export class UserItemRepository {
   }
 
   async update(id: string, UserItemBody: Partial<UserItem>) {
-    const res = await this.userItemRepository.update({id}, UserItemBody);
+    const res = await this.userItemRepository.update({ id }, UserItemBody);
     return res.affected ? res.affected > 0 : false;
   }
 

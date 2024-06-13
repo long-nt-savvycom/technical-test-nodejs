@@ -1,7 +1,7 @@
+import { AuthController } from '@auth/auth.controller';
+import { SignUpDto } from '@auth/dto/sign-up.dto';
+import { dtoValidationMiddleware } from '@middleware/dto-validator.middleware';
 import * as express from 'express';
-import { AuthController } from '../auth/auth.controller';
-import { SignUpDto } from '../auth/dto/sign-up.dto';
-import { dtoValidationMiddleware } from '../middlewares/dto-validator.middleware';
 const Router = express.Router();
 const authController = AuthController.getInstance();
 
