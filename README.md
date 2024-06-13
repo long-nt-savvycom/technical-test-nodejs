@@ -15,10 +15,12 @@
 
 1. Run `npm i` command
 2. edit .env file and fill other info
-3. Run `npm run watch` command
+3. Run `npm run swagger-autogen` to generate swagger file
+4. Run `npm run watch` command
 
 ### Production:
 
+1. Change DB_HOST in .env file to postgresdb (like service name in docker-compose.yml)
 1. Run `docker compose up -d` or `docker-compose up -d` (for old version)
 
 ### Postman for testing
@@ -29,6 +31,5 @@
 
 ### Incoming feature
 
-1. Swagger
-2. Refresh token
+1. Refresh token
 2. Optimize docker file for production

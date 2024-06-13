@@ -5,8 +5,34 @@ import * as express from 'express';
 const Router = express.Router();
 const authController = AuthController.getInstance();
 
-Router.post('/signup', dtoValidationMiddleware(SignUpDto), authController.signup);
+Router.post('/signup', dtoValidationMiddleware(SignUpDto), async (req, res, next) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      $ref: "#/components/schemas/loginSchema"
+                    }
+                }
+            }
+        } 
+    */
+  await authController.signup(req, res, next);
+});
 
-Router.post('/login', dtoValidationMiddleware(SignUpDto), authController.login);
+Router.post('/login', dtoValidationMiddleware(SignUpDto), async (req, res, next) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      $ref: "#/components/schemas/loginSchema"
+                    }
+                }
+            }
+        } 
+    */
+  await authController.login(req, res, next);
+});
 
 export { Router as authRouter };

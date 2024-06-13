@@ -1,4 +1,4 @@
-import { PagingDto } from '../../utils/dto/paging.dto';
+import { PagingDto } from '@utils/dto/paging.dto';
 import { DefineItemDto } from './dto/define-item.dto';
 import { GetItemStoreDto } from './dto/get-item-store.dto';
 import { UpdateItemLevelDto } from './dto/update-item-level.dto';
@@ -16,6 +16,10 @@ export class GameItemService {
   }
 
   async defineItem(body: DefineItemDto) {
+    const item = await itemRepository.findOne({ name: body.name });
+    if (item) {
+      throw new Error('Item name existed');
+    }
     return itemRepository.create(body);
   }
 

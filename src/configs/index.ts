@@ -1,4 +1,7 @@
 export default {
+  server: {
+    port: Number(process.env.SERVER_PORT) || 3000
+  },
   database: {
     host: process.env.DB_HOST || 'localhost',
     port: Number(process.env.DB_PORT) || 5432,

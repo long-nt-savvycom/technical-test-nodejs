@@ -1,13 +1,6 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { BaseEntity } from '../../../database/entity/Base';
-import { User } from '../../user/entities/user.model';
+import { BaseEntity } from '@database/entity/Base';
+import { User } from '@user/entities/user.model';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Item } from './item.model';
 
 @Entity({ name: 'user_item' })
@@ -15,16 +8,14 @@ export class UserItem extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  @Index()
+  @Column()
   userId: string;
 
   @ManyToOne(() => User, (user) => user.items)
   user: User;
 
-  @Column({ unique: true })
+  @Column()
   @JoinColumn({ name: 'userId' })
-  @Index()
   itemId: string;
 
   @ManyToOne(() => Item, (item) => item.userItems)
