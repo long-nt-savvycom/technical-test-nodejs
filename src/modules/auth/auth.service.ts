@@ -1,10 +1,10 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import config from '../config';
-import { userRepository } from '../user/user.repository';
 import { TokenPayload } from './auth.interface';
 import { TokenBody } from './dto/sign-token.dto';
 import { SignUpDto } from './dto/sign-up.dto';
+import { userRepository } from '@user/user.repository';
+import configs from '@configs/index';
 
 export class AuthService {
   private static _instance: AuthService;
@@ -46,12 +46,12 @@ export class AuthService {
   }
 
   private generateToken(payload: TokenBody): TokenPayload {
-    const accessToken = jwt.sign(payload, config.auth.accessTokenSecret, {
-      expiresIn: config.auth.accessTokenExpiredIn,
+    const accessToken = jwt.sign(payload, configs.auth.accessTokenSecret, {
+      expiresIn: configs.auth.accessTokenExpiredIn,
     });
 
-    const refreshToken = jwt.sign(payload, config.auth.refreshTokenSecret, {
-      expiresIn: config.auth.refreshTokenExpiredIn,
+    const refreshToken = jwt.sign(payload, configs.auth.refreshTokenSecret, {
+      expiresIn: configs.auth.refreshTokenExpiredIn,
     });
     return { accessToken, refreshToken };
   }

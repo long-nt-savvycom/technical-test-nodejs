@@ -1,16 +1,13 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import config from '../config';
-import { Item } from './entity/Item';
-import { User } from './entity/User';
-import { UserItem } from './entity/UserItem';
+import config from '../configs';
 
 export const AppDataSource = new DataSource({
   ...config.database,
   type: 'postgres',
   synchronize: true,
   logging: false,
-  entities: [User, Item, UserItem],
+  entities: [__dirname + '/../**/*.model.{js,ts}'],
   migrations: [],
   subscribers: [],
 });

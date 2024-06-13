@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
-import { AuthUserRequest } from '../auth/auth.interface';
 import { userService } from './user.service';
+import { AuthUserRequest } from '@auth/auth.interface';
 
 export class UserController {
   private static _instance: UserController;
@@ -19,11 +19,8 @@ export class UserController {
   ): Promise<void> {
     try {
       const userId = req.user.userId;
-      const resData = await userService.getProfile({ id: userId });
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.data = await userService.getProfile({ id: userId });
+      next()
     } catch (err) {
       next(err);
     }

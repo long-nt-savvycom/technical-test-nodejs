@@ -14,11 +14,8 @@ export class AuthController {
 
   public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const resData = await authService.login(req.body as SignUpDto);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.data = await authService.login(req.body as SignUpDto);
+      next();
     } catch (err) {
       next(err);
     }
@@ -26,27 +23,10 @@ export class AuthController {
 
   public async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const resData = await authService.signUp(req.body as SignUpDto);
-      res.json({
-        success: true,
-        data: resData,
-      });
+      res.locals.data = await authService.signUp(req.body as SignUpDto);
+      next();
     } catch (err) {
       next(err);
     }
   }
-
-  // authRoute.get('/refresh-token', (req: Request, res: Response): void => {
-  //   res.json({
-  //     success: true,
-  //     message: 'Get One User',
-  //   });
-  // });
-
-  // authRoute.get('/logout', (req: Request, res: Response): void => {
-  //   res.json({
-  //     success: true,
-  //     message: 'Update One User',
-  //   });
-  // });
 }

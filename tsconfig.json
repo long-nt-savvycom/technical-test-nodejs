@@ -1,5 +1,16 @@
 {
+  "ts-node": {
+    // Do not forget to `npm i -D tsconfig-paths`
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
   "compilerOptions": {
+    "rootDir": ".",
+    "types": [
+      "node"
+    ],
+    "baseUrl": "src",
     "lib": [
       "es5",
       "es6"
@@ -10,6 +21,32 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "paths": {
+      "@database/*": [
+        "database/*"
+      ],
+      "@game-item/*": [
+        "modules/game-item/*"
+      ],
+      "@user/*": [
+        "modules/user/*"
+      ],
+      "@auth/*": [
+        "modules/auth/*"
+      ],
+      "@middleware/*": [
+        "middlewares/*"
+      ],
+      "@configs/*": [
+        "configs/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
