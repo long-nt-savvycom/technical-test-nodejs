@@ -23,11 +23,9 @@
 1. Change DB_HOST in .env file to postgresdb (like service name in docker-compose.yml)
 1. Run `docker compose up -d` or `docker-compose up -d` (for old version)
 
-### Postman for testing
+### Testing
 
-1. Download postman import file [here](https://api.postman.com/collections/36261541-52a08469-ef2c-4c96-b72a-c963d34c5f03?access_key=PMAT-01J05XMMRZB0M6YB0QV42DRXE4)
-2. Go to Postman and import downloaded file
-3. Change SERVER_PORT in .env to 3001 (recommended) or change manually in postman
+1. Swagger [here](http://localhost:3001/doc)
 
 ### Incoming feature
 
