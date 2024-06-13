@@ -15,6 +15,7 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - net1
+    restart: 'unless-stopped'
 
   app:
     depends_on:
@@ -22,10 +23,13 @@ services:
     build: .
     restart: unless-stopped
     env_file: ./.env
+    environment:
+      - NODE_ENV=production
     ports:
       - $SERVER_PORT:$SERVER_PORT
     networks:
       - net1
+    restart: 'unless-stopped'
 
 volumes:
   db:
