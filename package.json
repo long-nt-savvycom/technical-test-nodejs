@@ -5,10 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "watch": "nodemon src/index.ts",
     "build": "npx tsc",
-    "prod": "node dist/index.js",
+    "prod": "TS_NODE_BASEURL=./dist/src node -r tsconfig-paths/register dist/src/index.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
