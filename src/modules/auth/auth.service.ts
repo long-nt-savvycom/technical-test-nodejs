@@ -1,10 +1,10 @@
+import configs from '@configs/index';
+import { userRepository } from '@user/user.repository';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { TokenPayload } from './auth.interface';
+import { SignUpResponse, TokenPayload } from './auth.interface';
 import { TokenBody } from './dto/sign-token.dto';
 import { SignUpDto } from './dto/sign-up.dto';
-import { userRepository } from '@user/user.repository';
-import configs from '@configs/index';
 
 export class AuthService {
   private static _instance: AuthService;
@@ -21,28 +21,29 @@ export class AuthService {
     if (!user) {
       throw new Error('User not found');
     }
-    const isValidPassword = this.comparePassword(user.password, loginDto.password);
+    const isValidPassword = await this.comparePassword(user.password, loginDto.password);
     if (!isValidPassword) {
       throw new Error('Password wrong');
     }
     return this.generateToken({ userId: user.id });
   }
 
-  public async signUp(signUpDto: SignUpDto) {
+  public async signUp(signUpDto: SignUpDto): Promise<SignUpResponse> {
     const user = await userRepository.findOne({ username: signUpDto.username });
     if (user) {
       throw new Error('Username existed');
     }
     signUpDto.password = await this.encryptPassword(signUpDto.password);
-    await userRepository.create(signUpDto);
+    const newUser = await userRepository.create(signUpDto);
+    return { userId: newUser.id };
   }
 
-  private async encryptPassword(password: string) {
-    return bcrypt.hashSync(password, 12);
+  private async encryptPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 12);
   }
 
-  private comparePassword(hashPassword: string, password: string) {
-    return bcrypt.compareSync(password, hashPassword);
+  private async comparePassword(hashPassword: string, password: string): Promise<boolean> {
+    return bcrypt.compare(password, hashPassword);
   }
 
   private generateToken(payload: TokenBody): TokenPayload {

@@ -13,6 +13,9 @@ export class UserService {
 
   async getProfile(userBody: Partial<User>) {
     const user = await userRepository.findOne(userBody);
+    if (!user) {
+      throw new Error('User not found');
+    }
     delete user.password;
     return user;
   }

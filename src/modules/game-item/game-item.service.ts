@@ -39,8 +39,8 @@ export class GameItemService {
     return userItemRepository.findMany({ userId }, options);
   }
 
-  async updateLevelItem(data: UpdateItemLevelDto): Promise<boolean> {
-    const userItem = await userItemRepository.findOne({ id: data.userItemId });
+  async updateLevelItem(userId: string, data: UpdateItemLevelDto): Promise<boolean> {
+    const userItem = await userItemRepository.findOne({ id: data.userItemId, userId });
     if (!userItem) {
       throw new Error('User Item not found');
     }

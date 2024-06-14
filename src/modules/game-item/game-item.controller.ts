@@ -83,6 +83,7 @@ export class GameItemController {
     try {
       res.locals.status = 204;
       res.locals.data = await gameItemService.updateLevelItem(
+        req.user.userId,
         <UpdateItemLevelDto>req.body,
       );
       next();
