@@ -1,7 +1,7 @@
 import { AuthUserRequest } from '@auth/auth.interface';
+import { authentication } from '@middlewares/authentication.middleware';
+import { UserController } from '@user/user.controller';
 import * as express from 'express';
-import { authentication } from '../middlewares/authentication.middleware';
-import { UserController } from '../modules/user/user.controller';
 const Router = express.Router();
 const userController = UserController.getInstance();
 

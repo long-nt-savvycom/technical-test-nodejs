@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgresdb:
     image: postgres
@@ -15,7 +13,6 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - net1
-    restart: 'unless-stopped'
 
   app:
     depends_on:
@@ -29,7 +26,6 @@ services:
       - $SERVER_PORT:$SERVER_PORT
     networks:
       - net1
-    restart: 'unless-stopped'
 
 volumes:
   db:

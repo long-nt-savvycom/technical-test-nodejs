@@ -10,7 +10,7 @@
     "types": [
       "node"
     ],
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "lib": [
       "es5",
       "es6"
@@ -22,7 +22,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
       "@database/*": [
@@ -37,7 +36,7 @@
       "@auth/*": [
         "modules/auth/*"
       ],
-      "@middleware/*": [
+      "@middlewares/*": [
         "middlewares/*"
       ],
       "@configs/*": [

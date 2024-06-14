@@ -1,17 +1,18 @@
+import 'module-alias/register';
 import 'dotenv/config';
-import { FormatResponse } from '@middleware/format-response.middleware';
+import { FormatResponse } from '@middlewares/format-response.middleware';
 import * as bodyParser from 'body-parser';
-import compression from 'compression';
-import cors from 'cors';
-import express from 'express';
+import * as compression from 'compression';
+import * as cors from 'cors';
+import * as express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
+import * as swaggerUi from 'swagger-ui-express';
 import configs from './configs';
 import { AppDataSource } from './database/data-source';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routers';
-import swaggerFile from './swagger_output.json';
+import * as swaggerFile from './swagger_output.json';
 import pino from 'pino';
 
 

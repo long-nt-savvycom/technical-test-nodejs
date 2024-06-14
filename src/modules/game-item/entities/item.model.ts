@@ -1,5 +1,5 @@
+import { BaseEntity } from '@database/entity/Base';
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '../../../database/entity/Base';
 import { UserItem } from './user-item.model';
 
 @Entity({ name: 'item' })

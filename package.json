@@ -8,7 +8,7 @@
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "watch": "nodemon -r tsconfig-paths/register src/index.ts",
     "build": "npx tsc",
-    "prod": "TS_NODE_BASEURL=./dist/src node -r tsconfig-paths/register --trace-sync-io dist/src/index.js",
+    "prod": "node dist/src/index.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
@@ -50,11 +50,21 @@
     "express-rate-limit": "^7.3.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "pg": "^8.4.0",
     "pino": "^9.2.0",
     "reflect-metadata": "^0.1.14",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "0.3.20"
+  },
+  "_moduleAliases": {
+    "@database": "dist/src/database",
+    "@game-item": "dist/src/modules/game-item",
+    "@auth": "dist/src/modules/auth",
+    "@user": "dist/src/modules/user",
+    "@middlewares": "dist/src/middlewares",
+    "@configs": "dist/src/configs",
+    "@utils": "dist/src/utils"
   }
 }
