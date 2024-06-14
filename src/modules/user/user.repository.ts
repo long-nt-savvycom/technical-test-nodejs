@@ -12,7 +12,7 @@ export class UserRepository {
     return this._instance;
   }
 
-  async findOne(userBody: Partial<User>): Promise<User> {
+  async findOne(userBody: Partial<User>): Promise<User | null> {
     return this.userRepository.findOne({ where: userBody });
   }
 

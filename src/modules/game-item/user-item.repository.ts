@@ -1,5 +1,5 @@
-import { AppDataSource } from '../../database/data-source';
-import { PagingDto } from '../../utils/dto/paging.dto';
+import { AppDataSource } from '@database/data-source';
+import { PagingDto } from '@utils/dto/paging.dto';
 import { UserItem } from './entities/user-item.model';
 
 export class UserItemRepository {

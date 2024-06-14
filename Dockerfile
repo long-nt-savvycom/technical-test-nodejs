@@ -1,13 +1,39 @@
-FROM node:18
+FROM node:18-alpine as development
 
 WORKDIR /app
 
-COPY package*.json .
+COPY --chown=node:node package*.json .
 
-RUN npm install
+RUN npm ci
 
-COPY . .
+COPY --chown=node:node . .
+
+USER node
+
+FROM node:18-alpine as builder
+
+WORKDIR /app
+
+COPY --chown=node:node package*.json ./
+
+COPY --chown=node:node --from=development /app/node_modules ./node_modules
+
+COPY --chown=node:node . .
 
 RUN npm run build
 
-CMD npm run prod
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
+COPY --chown=node:node package*.json .
+RUN npm ci --omit=dev && npm cache clean --force
+
+USER node
+
+FROM node:18-alpine As production
+
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/dist ./dist
+COPY --chown=node:node --from=builder /app/package.json ./package.json
+
+CMD ["node", "dist/src/index.js"]

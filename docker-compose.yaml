@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgresdb:
     image: postgres
@@ -22,6 +20,8 @@ services:
     build: .
     restart: unless-stopped
     env_file: ./.env
+    environment:
+      - NODE_ENV=production
     ports:
       - $SERVER_PORT:$SERVER_PORT
     networks:

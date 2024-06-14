@@ -1,4 +1,5 @@
 import { AuthUserRequest } from '@auth/auth.interface';
+import { TokenBody } from '@auth/dto/sign-token.dto';
 import configs from '@configs/index';
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
@@ -17,6 +18,6 @@ export const authentication = (req: Request, res: Response, next: NextFunction) 
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  (<AuthUserRequest>req).user = decode;
+  (<AuthUserRequest>req).user = decode as TokenBody;
   next();
 };

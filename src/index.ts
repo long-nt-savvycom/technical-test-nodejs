@@ -1,16 +1,20 @@
-import { FormatResponse } from '@middleware/format-response.middleware';
-import * as bodyParser from 'body-parser';
-import cors from 'cors';
+import 'module-alias/register';
 import 'dotenv/config';
-import express from 'express';
+import { FormatResponse } from '@middlewares/format-response.middleware';
+import * as bodyParser from 'body-parser';
+import * as compression from 'compression';
+import * as cors from 'cors';
+import * as express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
+import * as swaggerUi from 'swagger-ui-express';
 import configs from './configs';
 import { AppDataSource } from './database/data-source';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { routes } from './routers';
-import swaggerFile from './swagger_output.json';
+import * as swaggerFile from './swagger_output.json';
+import pino from 'pino';
+
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -18,6 +22,10 @@ const limiter = rateLimit({
 });
 
 const app = express();
+
+const logger = pino();
+
+app.use(compression())
 
 app.use(cors());
 
@@ -41,11 +49,11 @@ app.use(errorHandler);
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log('Data Source has been initialized!');
+    logger.info('Database connected!');
 
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}.`);
+      logger.info(`Server is running on port ${PORT}.`);
     });
-    console.log(`Swagger running at http://localhost:${PORT}/doc`);
+    logger.info(`Swagger at http://localhost:${PORT}/doc`);
   })
   .catch((error) => console.log(error));
