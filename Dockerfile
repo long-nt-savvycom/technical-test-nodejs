@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
+RUN npm run test
+
 USER node
 
 FROM node:18-alpine as builder

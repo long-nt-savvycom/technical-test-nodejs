@@ -26,6 +26,7 @@
 ### Testing
 
 1. Swagger [here](http://localhost:3001/doc)
+2. Unit test: `npm run test`
 
 ### Incoming feature
 
