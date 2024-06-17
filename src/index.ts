@@ -1,4 +1,5 @@
-import 'module-alias/register';
+// NOTE: Enable line below when build production and comment in development (TODO:FIX)
+// import 'module-alias/register'; 
 import 'dotenv/config';
 import { FormatResponse } from '@middlewares/format-response.middleware';
 import * as bodyParser from 'body-parser';
