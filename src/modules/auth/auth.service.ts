@@ -1,6 +1,7 @@
 import configs from '@configs/index';
 import { userRepository } from '@user/user.repository';
 import * as bcrypt from 'bcrypt';
+import rateLimit from 'express-rate-limit';
 import * as jwt from 'jsonwebtoken';
 import { SignUpResponse, TokenPayload } from './auth.interface';
 import { TokenBody } from './dto/sign-token.dto';
@@ -19,11 +20,11 @@ export class AuthService {
   public async login(loginDto: SignUpDto): Promise<TokenPayload> {
     const user = await userRepository.findOne({ username: loginDto.username });
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Invalid username or password');
     }
     const isValidPassword = await this.comparePassword(user.password, loginDto.password);
     if (!isValidPassword) {
-      throw new Error('Password wrong');
+      throw new Error('Invalid username or password');
     }
     return this.generateToken({ userId: user.id });
   }
@@ -31,7 +32,7 @@ export class AuthService {
   public async signUp(signUpDto: SignUpDto): Promise<SignUpResponse> {
     const user = await userRepository.findOne({ username: signUpDto.username });
     if (user) {
-      throw new Error('Username existed');
+      throw new Error('Username already exists');
     }
     signUpDto.password = await this.encryptPassword(signUpDto.password);
     const newUser = await userRepository.create(signUpDto);
@@ -42,7 +43,10 @@ export class AuthService {
     return bcrypt.hash(password, 12);
   }
 
-  private async comparePassword(hashPassword: string, password: string): Promise<boolean> {
+  private async comparePassword(
+    hashPassword: string,
+    password: string,
+  ): Promise<boolean> {
     return bcrypt.compare(password, hashPassword);
   }
 
@@ -57,5 +61,12 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 }
+
+// Express rate limiter middleware example
+export const loginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: 'Too many login attempts, please try again later',
+});
 
 export const authService = AuthService.getInstance();

@@ -1,5 +1,5 @@
 // NOTE: Enable line below when build production and comment in development (TODO:FIX)
-// import 'module-alias/register'; 
+// import 'module-alias/register';
 import 'dotenv/config';
 import { FormatResponse } from '@middlewares/format-response.middleware';
 import * as bodyParser from 'body-parser';
@@ -26,15 +26,15 @@ const app = express();
 
 const logger = pino();
 
-app.use(compression())
+app.use(compression());
 
 app.use(cors());
 
 app.use(limiter);
 app.use(helmet());
 
-app.use(bodyParser.json({ limit: '100mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '500kb' }));
+app.use(bodyParser.urlencoded({ limit: '500kb', extended: true }));
 
 const PORT = configs.server.port;
 
@@ -52,9 +52,16 @@ AppDataSource.initialize()
   .then(async () => {
     logger.info('Database connected!');
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       logger.info(`Server is running on port ${PORT}.`);
     });
     logger.info(`Swagger at http://localhost:${PORT}/doc`);
+
+    process.on('SIGTERM', () => {
+      logger.info('SIGTERM signal received: closing HTTP server');
+      server.close(() => {
+        logger.info('HTTP server closed');
+      });
+    });
   })
   .catch((error) => console.log(error));

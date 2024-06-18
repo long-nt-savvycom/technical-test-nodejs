@@ -46,7 +46,7 @@ test('login with other user', async () => {
   try {
     const res = await authService.login(testData);
   } catch (error) {
-    expect(error.message).toMatch('User not found');
+    expect(error.message).toMatch('Invalid username or password');
   }
 });
 
@@ -59,7 +59,7 @@ test('login with wrong password', async () => {
   try {
     const res = await authService.login(testData);
   } catch (error) {
-    expect(error.message).toMatch('Password wrong');
+    expect(error.message).toMatch('Invalid username or password');
   }
 });
 
@@ -78,6 +78,6 @@ test('signup with existed user', async () => {
   try {
     const res = await authService.signUp(testData);
   } catch (error) {
-    expect(error.message).toMatch('Username existed');
+    expect(error.message).toMatch('Username already exists');
   }
 });
